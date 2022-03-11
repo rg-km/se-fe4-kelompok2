@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <script type="text/javascript" src="index-basic.js"></script>
+    </head>
+    <style>
+        body {
+            background-color: rgb(255, 255, 255);
+
+        }
+        .snak {
+            background-color: rgb(255, 255, 255);
+            border: 3px solid #000000;
+            margin: auto;
+            width: 600px;
+            height: 600px;
+        }
+        
+        
+    </style>
+    <body onload="draw();">
+        <h1>Ular Berbisa</h1>
+        <img src="apel.png" style="display: none;" class="hide" id="apel" width="20" height="20" alt="">
+        <canvas id="snakeBoard" width="600" height="600" style="border:3px solid #000000;"></canvas>
+        <h1>Score</h1>
+        <canvas id="score1Board" class="snakeBoard" width="100" height="100" style="border:3px solid #000000;"></canvas>
+        <h1>Speed</h1>
+        <canvas id="speed" width="100" height="100" style="border:3px solid #000000;"></canvas>
+        <p>Hp</p>
+        <canvas id="hp" width="100" height="100" style="border:3px solid #000000;"></canvas>
+        <p>Lvl</p>
+        <canvas id="lvl" width="100" height="100" style="border:3px solid #000000;"></canvas>
+    </body>
+</html>
