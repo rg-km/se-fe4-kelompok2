@@ -1,7 +1,29 @@
-body {
-text-align: center;
-
+html,body {
+    
+    font-family: "Poppins", sans-serif;
+    color: #6e7888;
 }
+canvas {
+    background-color: #181825;
+    
+}
+.wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+body {
+    background-color: #222738;
+    justify-content: center;
+    text-align: center;
+    color: #6e7888;
+  }
 .board{
     margin-bottom: 50px;
 }
+@font-face {
+    font-family: "game";
+    src: url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;800&display=swap");
+  }

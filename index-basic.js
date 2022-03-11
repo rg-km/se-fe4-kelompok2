@@ -67,23 +67,24 @@ function drawSpeed(speedinterval){
     speedCtx.fillText(speedCanvas);
 }
 
-    
+
 function draw() {
     setInterval(function() {
         let snakeCanvas = document.getElementById("snakeBoard");
         let ctx = snakeCanvas.getContext("2d");
-
+        
         ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
         drawCell(ctx, snake1.position.x, snake1.position.y, snake1.color);
         
-        
+       
         //drawCell(ctx, apple.position.x, apple.position.y, apple.color);
         //drawCell(ctx, apple2.position.x, apple2.position.y, apple2.color);
          let img = document.getElementById("apel");
          ctx.drawImage(img, apple.position.x * CELL_SIZE, apple.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
          ctx.drawImage(img, apple2.position.x * CELL_SIZE, apple2.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        drawScore(snake1);
+        
+         drawScore(snake1);
         
     }, REDRAW_INTERVAL);
 }
