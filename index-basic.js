@@ -12,7 +12,7 @@ const DIRECTION = {
     UP: 2,
     DOWN: 3,
 }
-const MOVE_INTERVAL = 40;
+const MOVE_INTERVAL = 100; //speed snake
 
 function initPosition() {
     return {
@@ -59,13 +59,22 @@ function drawScore(snake) {
     scoreCtx.fillText(snake.score, 10, scoreCanvas.scrollHeight / 2);
 }
 
+//new line for show speed in canvas
+function drawSpeed(speedinterval){
+    speedCanvas = document.getElementById("speed2board");
+    speedCtx.font = "30px Arial";
+    speedCtx.fillStyle = snake.color
+    speedCtx.fillText(speedCanvas);
+}
+
+    
 function draw() {
     setInterval(function() {
         let snakeCanvas = document.getElementById("snakeBoard");
         let ctx = snakeCanvas.getContext("2d");
 
         ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
-        
+
         drawCell(ctx, snake1.position.x, snake1.position.y, snake1.color);
         
         
@@ -159,15 +168,7 @@ document.addEventListener("keydown", function (event) {
         snake1.direction = DIRECTION.DOWN;
     }
 
-    if (event.key === "a") {
-        snake2.direction = DIRECTION.LEFT;
-    } else if (event.key === "d") {
-        snake2.direction = DIRECTION.RIGHT;
-    } else if (event.key === "w") {
-        snake2.direction = DIRECTION.UP;
-    } else if (event.key === "s") {
-        snake2.direction = DIRECTION.DOWN;
-    }
+
     
 })
 
