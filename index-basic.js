@@ -21,6 +21,7 @@ function initPosition() {
     }
 }
 
+
 function initDirection() {
     return Math.floor(Math.random() * 4);
 }
@@ -31,6 +32,7 @@ let snake1 = {
     direction: initDirection(),
     score: 0,
 }
+
 
 let apple = {
     color: "red",
@@ -60,12 +62,18 @@ function drawScore(snake) {
 }
 
 //new line for show speed in canvas
-function drawSpeed(speedinterval){
-    speedCanvas = document.getElementById("speed2board");
+function drawSpeed(snake) {
+    let MOVE_INTERVAL;
+    MOVE_INTERVAL = document.getElementById("speed2Board");
+    let speedCtx = MOVE_INTERVAL.getContext("2d");
+
+    speedCtx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     speedCtx.font = "30px Arial";
     speedCtx.fillStyle = snake.color
-    speedCtx.fillText(speedCanvas);
-}
+    speedCtx.fillText(snake.speed, 10, MOVE_INTERVAL.scrollHeight / 2);
+
+}   
+
 
 
 function draw() {
@@ -168,10 +176,11 @@ document.addEventListener("keydown", function (event) {
     } else if (event.key === "ArrowDown") {
         snake1.direction = DIRECTION.DOWN;
     }
-
-
     
+
+
 })
+
 
 move(snake1);
 
