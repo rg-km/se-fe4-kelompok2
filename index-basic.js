@@ -10,7 +10,7 @@ const DIRECTION = {
     DOWN: 3,
 }
 
-const MOVE_INTERVAL = 120;
+let MOVE_INTERVAL = 100;
 
 function initPosition() {
     return {
@@ -39,6 +39,7 @@ function initSnake(color) {
         ...initHeadAndBody(),
         direction: initDirection(),
         score: 0,
+        speed:MOVE_INTERVAL,
     }
 }
 
@@ -103,18 +104,16 @@ function drawScore(snake) {
 
 //new line for show speed in canvas
 function drawSpeed(snake) {
-    let MOVE_INTERVAL;
-    MOVE_INTERVAL = document.getElementById("speed2Board");
-    let speedCtx = MOVE_INTERVAL.getContext("2d");
-
+    let speedCanvas;
+    if (snake.color == snake1.color) {
+        speedCanvas = document.getElementById("speed2Board");
+    }
+    let speedCtx = speedCanvas.getContext("2d");
     speedCtx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     speedCtx.font = "30px Arial";
     speedCtx.fillStyle = snake.color
-    speedCtx.fillText(snake.speed, 10, MOVE_INTERVAL.scrollHeight / 2);
-
-}   
-
-
+    speedCtx.fillText(snake.speed, 10, speedCanvas.scrollHeight / 2);
+}
 
 function draw() {
     setInterval(function() {
@@ -139,9 +138,8 @@ function draw() {
         drawCell(ctx, obstacle.position.x, obstacle.position.y, obstacle.color);
         }
 
-
+        drawSpeed(snake1);
         drawScore(snake1);
-
     }, REDRAW_INTERVAL);
 }
 
@@ -297,8 +295,5 @@ function initGame() {
     move(snake1);
    
 }
-
-})
-
 
 initGame();
