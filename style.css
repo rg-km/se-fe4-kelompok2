@@ -5,7 +5,10 @@ html,body {
 }
 canvas {
     background-color: #181825;
-    
+    margin-bottom: 5px;
+}
+.snakeboard{
+  margin-bottom: 50px;
 }
 .wrapper {
     display: flex;
