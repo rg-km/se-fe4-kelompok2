@@ -1,31 +1,37 @@
 html,body {
     
-    font-family: "Poppins", sans-serif;
-    color: #6e7888;
+  font-family: "Poppins", sans-serif;
+  color: #ffffff;
 }
 canvas {
-    background-color: #181825;
-    margin-bottom: 5px;
+  background-color: #EEEEEE;
+  margin-bottom: 5px;
 }
 .snakeboard{
-  margin-bottom: 50px;
+margin-bottom: 10px;
 }
 .wrapper {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-  }
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
 body {
-    background-color: #222738;
-    justify-content: center;
-    text-align: center;
-    color: #6e7888;
-  }
+  background-color: #D8D2CB;
+  justify-content: center;
+  text-align: center;
+  color: #6e7888;
+  
+}
 .board{
-    margin-bottom: 50px;
+  margin-bottom: 50px;
 }
 @font-face {
-    src: url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;800&display=swap");
-  }
+  src: url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;800&display=swap");
+}
+
+.asset {
+display: none;
+}
+
