@@ -1,18 +1,16 @@
 const CELL_SIZE = 20;
 const CANVAS_SIZE = 600;
-//made faster
 const REDRAW_INTERVAL = 50;
 const WIDTH = CANVAS_SIZE / CELL_SIZE;
 const HEIGHT = CANVAS_SIZE / CELL_SIZE;
-
-//this
 const DIRECTION = {
     LEFT: 0,
     RIGHT: 1,
     UP: 2,
     DOWN: 3,
 }
-const MOVE_INTERVAL = 100; //speed snake
+
+const MOVE_INTERVAL = 120;
 
 function initPosition() {
     return {
@@ -22,31 +20,73 @@ function initPosition() {
 }
 
 
+function initHeadAndBody() {
+    let head = initPosition();
+    let body = [{x: head.x, y: head.y}];
+    return {
+        head: head,
+        body: body,
+    }
+}
+
 function initDirection() {
     return Math.floor(Math.random() * 4);
 }
 
-let snake1 = {
-    color: "purple",
-    position: initPosition(),
-    direction: initDirection(),
-    score: 0,
+function initSnake(color) {
+    return {
+        color: color,
+        ...initHeadAndBody(),
+        direction: initDirection(),
+        score: 0,
+    }
 }
 
 
-let apple = {
+
+let snake1 = initSnake("purple");
+
+let apples = [{
+  
     color: "red",
     position: initPosition(),
-}
-let apple2 = {
-    color: "brown",
+},
+{
+    color: "green",
     position: initPosition(),
-}
+}]
+
+let obstacles = [{
+    color: "yellow",
+    position: initPosition(),
+},
+{
+    color: "yellow",
+    position: initPosition(),
+
+},
+{
+    color: "yellow",
+    position: initPosition(),
+
+},
+{
+    color: "yellow",
+    position: initPosition(),
+
+},
+{
+    color: "yellow",
+    position: initPosition(),
+
+}]
+
 
 function drawCell(ctx, x, y, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 }
+
 
 function drawScore(snake) {
     let scoreCanvas;
@@ -80,70 +120,118 @@ function draw() {
     setInterval(function() {
         let snakeCanvas = document.getElementById("snakeBoard");
         let ctx = snakeCanvas.getContext("2d");
-        
+
         ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
-        drawCell(ctx, snake1.position.x, snake1.position.y, snake1.color);
-        
-       
-        //drawCell(ctx, apple.position.x, apple.position.y, apple.color);
-        //drawCell(ctx, apple2.position.x, apple2.position.y, apple2.color);
-         let img = document.getElementById("apel");
-         ctx.drawImage(img, apple.position.x * CELL_SIZE, apple.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-         ctx.drawImage(img, apple2.position.x * CELL_SIZE, apple2.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        
-         drawScore(snake1);
-        
+        drawCell(ctx, snake1.head.x, snake1.head.y, snake1.color);
+        for (let i = 1; i < snake1.body.length; i++) {
+            drawCell(ctx, snake1.body[i].x, snake1.body[i].y, snake1.color);
+        }
+
+
+        for (let i = 0; i < apples.length; i++) {
+            let apple = apples[i];
+            var img = document.getElementById("apel");
+            ctx.drawImage(img, apple.position.x * CELL_SIZE, apple.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+        for (let i = 0; i < obstacles.length; i++) {
+            let obstacle = obstacles[i];
+        drawCell(ctx, obstacle.position.x, obstacle.position.y, obstacle.color);
+        }
+
+
+        drawScore(snake1);
+
     }, REDRAW_INTERVAL);
 }
 
 function teleport(snake) {
-    if (snake.position.x < 0) {
-        snake.position.x = CANVAS_SIZE / CELL_SIZE - 1;
+    if (snake.head.x < 0) {
+        snake.head.x = CANVAS_SIZE / CELL_SIZE - 1;
     }
-    if (snake.position.x >= WIDTH) {
-        snake.position.x = 0;
+    if (snake.head.x >= WIDTH) {
+        snake.head.x = 0;
     }
-    if (snake.position.y < 0) {
-        snake.position.y = CANVAS_SIZE / CELL_SIZE - 1;
+    if (snake.head.y < 0) {
+        snake.head.y = CANVAS_SIZE / CELL_SIZE - 1;
     }
-    if (snake.position.y >= HEIGHT) {
-        snake.position.y = 0;
+    if (snake.head.y >= HEIGHT) {
+        snake.head.y = 0;
     }
 }
 
-function eat(snake, apple, apple2) {
-    if (snake.position.x == apple.position.x && snake.position.y == apple.position.y) {
-        apple.position = initPosition();
-        snake.score++;
-    }else if (snake.position.x == apple2.position.x && snake.position.y == apple2.position.y) {
-        apple2.position = initPosition();
-        snake.score++;
+
+function eat(snake, apples) {
+    for (let i = 0; i < apples.length; i++) {
+        let apple = apples[i];
+        if (snake.head.x == apple.position.x && snake.head.y == apple.position.y) {
+            apple.position = initPosition();
+            snake.score++;
+            snake.body.push({x: snake.head.x, y: snake.head.y});
+        }
     }
 }
 
 function moveLeft(snake) {
-    snake.position.x--;
+    snake.head.x--;
     teleport(snake);
-    eat(snake, apple, apple2);
+    eat(snake, apples);
 }
 
 function moveRight(snake) {
-    snake.position.x++;
+    snake.head.x++;
     teleport(snake);
-    eat(snake, apple, apple2);
+    eat(snake, apples);
 }
 
 function moveDown(snake) {
-    snake.position.y++;
+    snake.head.y++;
     teleport(snake);
-    eat(snake, apple, apple2);
+    eat(snake, apples);
 }
 
 function moveUp(snake) {
-    snake.position.y--;
+    snake.head.y--;
     teleport(snake);
-    eat(snake, apple, apple2);
+    eat(snake, apples);
+}
+
+function obstacleCollison() {
+    let isCollide = false;
+
+    for (let i = 0; i < obstacles.length; i++){
+        if (snake.head.x == obstacles.position.x && snake.head.y == obstacles.position.y){
+            isCollide = true;
+        }else if (snake.head.y == obstacles.position.y && snake.head.x == obstacles.position.x) {
+            isCollide = true;
+        }
+    } 
+}
+
+function checkCollision(snakes) {
+    let isCollide = false;
+
+    for (let i = 0; i < snakes.length; i++) {
+        for (let j = 0; j < snakes.length; j++) {
+            for (let k = 1; k < snakes[j].body.length; k++) {
+                    if (snakes[i].head.x == snakes[j].body[k].x && snakes[i].head.y == snakes[j].body[k].y) {
+                        isCollide = true;
+                }
+            }
+        }
+    }
+    
+
+    if (isCollide) {
+        var audio = new Audio();
+        audio.src = "assets/assets_crash.mp3"
+        audio.play();
+
+        alert("Game over");
+        snake1 = initSnake("purple");
+
+    }
+    return isCollide;
 }
 
 function move(snake) {
@@ -161,26 +249,56 @@ function move(snake) {
             moveUp(snake);
             break;
     }
-    setTimeout(function() {
-        move(snake);
-    }, MOVE_INTERVAL);
+    moveBody(snake);
+
+    if (!checkCollision([snake1])) {
+        setTimeout(function() {
+            move(snake);
+        }, MOVE_INTERVAL);
+    } else {
+        initGame();
+    }
+}
+
+function moveBody(snake) {
+    snake.body.unshift({ x: snake.head.x, y: snake.head.y });
+    snake.body.pop();
+}
+
+function turn(snake, direction) {
+    const oppositeDirections = {
+        [DIRECTION.LEFT]: DIRECTION.RIGHT,
+        [DIRECTION.RIGHT]: DIRECTION.LEFT,
+        [DIRECTION.DOWN]: DIRECTION.UP,
+        [DIRECTION.UP]: DIRECTION.DOWN,
+    }
+
+    if (direction !== oppositeDirections[snake.direction]) {
+        snake.direction = direction;
+    }
 }
 
 document.addEventListener("keydown", function (event) {
     if (event.key === "ArrowLeft") {
-        snake1.direction = DIRECTION.LEFT;
+        turn(snake1, DIRECTION.LEFT);
     } else if (event.key === "ArrowRight") {
-        snake1.direction = DIRECTION.RIGHT;
+        turn(snake1, DIRECTION.RIGHT);
     } else if (event.key === "ArrowUp") {
-        snake1.direction = DIRECTION.UP;
+        turn(snake1, DIRECTION.UP);
     } else if (event.key === "ArrowDown") {
-        snake1.direction = DIRECTION.DOWN;
+        turn(snake1, DIRECTION.DOWN);
     }
     
 
 
 })
 
+function initGame() {
+    move(snake1);
+   
+}
 
-move(snake1);
+})
 
+
+initGame();
